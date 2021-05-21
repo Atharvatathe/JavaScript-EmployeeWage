@@ -1,4 +1,4 @@
-//UC9:Arrow Function
+//UC10:Arrow Function
 
 const IS_PART_TIME = 1;
 const IS_FULL_TIME = 2;
@@ -12,9 +12,8 @@ let totalEmpHrs = 0;
 let totalWorkingDays = 0;
 
 
-let empDailyWageArr = new Array();
-let empDailyWageMap = new Map();
-let empDailyHrsMap = new Map();
+let empDailyHrsAndWageArr = new Array();
+
 function calcDailyWage(empHrs){
         return empHrs * WAGE_PER_HOUR;
     }
@@ -25,9 +24,14 @@ while (totalEmpHrs <= MAX_HRS_IN_MONTH
 		let empCheck = Math.floor(Math.random() * 10) % 3;
 		let empHrs = getWorkingHours(empCheck);
 		totalEmpHrs += empHrs;
-		empDailyWageArr.push(calcDailyWage(empHrs));
-		empDailyWageMap.set(totalWorkingDays, calcDailyWage(empHrs));
-		empDailyHrsMap.set(totalWorkingDays,empHrs);
+		empDailyHrsAndWageArr.push(
+		{
+			dayNum:totalWorkingDays,
+			dailyHours:empHrs,
+			dailyWage: calcDailyWage(empHrs),
+			toString(){
+			return '\nDay' + this.dayNum + '=> Working Hours is ' + this.dailyHours + 'And Wagw Earned =' +this.dailyWage},
+		});
 	}
 
 function getWorkingHours(empCheck){
@@ -43,32 +47,5 @@ function getWorkingHours(empCheck){
 		}
 }
 
-console.log(empDailyWageMap);
-function totalWages(totalWage, dailyWage){
-	return totalWage + dailyWage;
-}
-
-const findTotal = (totalval, dailyval) => {
-	return totalval + dailyval;
-}
-
-let count =0;
-let totalHours = Array.from(empDailyHrsMap.values()).filter(dailyHours => dailyHours > 0).reduce(findTotal,0);
-let totalSalary = empDailyWageArr.filter(dailyWage => dailyWage > 0).reduce(findTotal,0);
-
-console.log("Uc9 - Emp Wage with Arraow: " + " Total Hours: " + totalHours + " Total Wages: "+ totalSalary);
-
-
-let nonWorkingDays = new Array();
-let partWorkingDays = new Array();
-let fullWorkingDays = new Array();
-empDailyHrsMap.forEach((value,key,map) => {
-	if(value == 8) fullWorkingDays.push(key);
-	else if(value == 4) partWorkingDays.push(key);
-	else nonWorkingDays.push(key);
-});
-
-console.log("Full Working Days: " +fullWorkingDays);
-console.log("Part Working Days: " +partWorkingDays);
-console.log("Non Working Days: " +nonWorkingDays);
+console.log("Showing Daily Hours Worked and Wage Earned: " +empDailyHrsAndWageArr);
 
